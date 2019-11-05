@@ -7,156 +7,37 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="assets/css/reset.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 
     <title>Trivia Game</title>
 
 </head>
 
 <body>
-    <div id="background">
+    <!-- <div id="background">
         <img src="assets/images/sunset.jpeg" class="img-responsive stretch" alt="Sunset on Lake Kariba" />
-    </div>
+    </div> -->
 
-    <div class="container">
-        <div class="jumbotron">
-            <div id="main-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="text-center" id="title">Beautiful Zimbabwe</h1>
-                    </div>
-                </div> <!-- trivia title row -->
-
-                <div class="container" id="start-container">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg start" id="start-btn">Start</button>
-                        </div>
-                    </div> <!-- start button row -->
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 class="text-center" id="time-remain"></h2>
-                    </div>
-                </div> <!-- time remaining row -->
-
-                <div class="container" id="question-container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center" id="question"></h2>
-                        </div>
-                    </div> <!-- question row -->
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg choice" id="choice-0"></button>
-                        </div>
-                    </div> <!-- choice 0 row -->
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg choice" id="choice-1"></button>
-                        </div>
-                    </div> <!-- choice 1 row -->
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg choice" id="choice-2"></button>
-                        </div>
-                    </div> <!-- choice 2 row -->
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg choice" id="choice-3"></button>
-                        </div>
-                    </div> <!-- choice 3 row -->
-                </div> <!-- question container -->
-
-                <div class="container" id="answer-container">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <div id="answer-text">
-                            </div>
-                        </div>
-                    </div> <!-- answer text row -->
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="answer-img">
-                            </div>
-                        </div>
-                    </div> <!-- answer image row -->
-                </div> <!-- answer container -->
-
-                <div class="container" id="result-container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center" id="comment"></h2>
-                        </div>
-                    </div> <!-- comment row -->
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center" id="correct"></h2>
-                        </div>
-                    </div> <!-- correct row -->
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center" id="incorrect"></h2>
-                        </div>
-                    </div> <!-- incorrect row -->
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 class="text-center" id="unanswered"></h2>
-                        </div>
-                    </div> <!-- unanswered row -->
-
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="button" class="btn btn-default btn-lg start" id="restart-btn">Restart?</button>
-                        </div>
-                    </div> <!-- restart button row -->
-
-                </div> <!-- result container -->
-            </div> <!-- main-content -->
-
-            <div class="container" id="progress-container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="center-block" id="progress-col">
-                            <div class="text-center">
-                                <h3>Progress...</h3>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0"
-                                    aria-valuemin="0" aria-valuemax="100">
-                                </div>
-                            </div>
-                        </div> <!-- progress column -->
-                    </div>
-                </div>
-            </div> <!-- progress container -->
-
-        </div> <!-- jumbotron -->
-
-    </div> <!-- main container -->
-
+    <div id="question"></div>
+    <button id="choice-0"></button>
+    <button id="choice-1"></button>
+    <button id="choice-2"></button>
+    <button id="choice-3"></button>
+    
 
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+    <script src="assets/javascript/game.js"></script>
 </body>
 
 </html>
