@@ -10,9 +10,10 @@ function Question(number, questionText, choices, answer) {
 
         $("#question").html(this.questionText);
         this.choices.forEach(element => {
-            let choices = $("<div>")
-            choices.append("<button>" + element + "</button>");
-            $("#question").append(choices);
+            let choiceSelection = $("<div>");
+            choiceSelection.attr("answer", element);
+            choiceSelection.append("<button class='btn-choice'>" + element + "</button>");
+            $("#question").append(choiceSelection);
         });
     }
 }
@@ -25,9 +26,14 @@ questionSet = [Q1, Q2, Q3, Q4]
 
 
 let gameInterval;
-let gametime = 2;
+let gametime = 25;
 let timerRunning = false;
 let questionNumber = 0;
+let correct = 0;
+let wrong = 0;
+let skipped = 0;
+let userAnswer;
+const resultDiv = $(".results");
 
 function run() {
     $("#start").hide();
@@ -41,6 +47,7 @@ function run() {
             timerRunning = true;
             console.log(questionNumber);
         }
+
     }
     // questionSet[questionNumber].displayQuestion();
     
@@ -60,8 +67,11 @@ function decrement() {
     }
     if (questionNumber === questionSet.length) {
         stop();
+        $("#timer-display").empty();
         timerRunning = false;
-        $("#reset").show()
+        showresults();
+        $("#reset").show();
+        $("#question").empty();
     }
  
 }
@@ -80,10 +90,42 @@ function reset() {
     questionNumber = 0;
     gametime = 2;
     run();
+    $("#question").show();
+    $(".results").empty();
+}
+
+function showresults() {
+    
+    
+    resultDiv.append("<h2>Game Over!");
+    resultDiv.append("<div>Total Correct: " + correct + "</div>");
+    resultDiv.append("<div>Total Wrong: " + wrong+ "</div>");
+    resultDiv.append("<div>Total Skipped: " + skipped+ "</div>");
+}
+
+function answer() {
+
+    userAnswer = $(this).attr("answer");
+
+
+    if (userAnswer === questionSet[questionNumber].answer) {
+        stop();
+        correct++;
+        userAnswer = "";
+        resultDiv.html("<h2>Correct!");
+        
+    } else {
+        stop();
+        wrong++;
+        resultDiv.html("<h2>Wrong! The correct answer is: " + questionSet[questionNumber].answer);
+    }
+    stop();
+    console.log(this.value);
 }
 
 
 $("#start").on("click", run);
 $("#reset").on("click", reset);
-// $("button").on("click", answer);
+$(".btn-choice").on("click", answer);
+
 
