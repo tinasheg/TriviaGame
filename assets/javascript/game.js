@@ -1,131 +1,160 @@
-function Question(number, questionText, choices, answer) {
-    this.number = number;
-    this.questionText = questionText;
-    this.choices = choices;
-    this.answer = answer;
-    this.displayQuestion = function () {
-
-        // questionDiv = $("<form>");
-        // questionDiv.text(this.questionText);
-
-        $("#question").html(this.questionText);
-        this.choices.forEach(element => {
-            let choiceSelection = $("<div>");
-            choiceSelection.attr("answer", element);
-            choiceSelection.append("<button class='btn-choice'>" + element + "</button>");
-            $("#question").append(choiceSelection);
-        });
+$(document).ready(function () {
+    var options = [
+        {
+            question: "What does Mosi Oa tunya mean?", 
+            choice: ["Smoke that thunders", "Victoria Falls", "Windy ravine", "Thunderstorms"],
+            answer: 0,
+            photo: "assets/images/vicfalls.jpeg"
+         },
+         {
+             question: "Who was the first president of Zimbabwe?", 
+            choice: ["Robert Mugabe", "Canaan Banana", "Morgan Tsvangirai", "Abel Muzorewa"],
+            answer: 1,
+            photo: "assets/images/giraffe.jpeg"
+         }, 
+         {
+             question: "In what year did Zimbabwe attain independence from British Colonial Rule?", 
+            choice: ["1957", "1980", "2017", "1960"],
+            answer: 1,
+            photo: "assets/images/mutarazi.jpeg"
+        }, 
+        {
+            question: "What is the capital city of Zimbabwe?", 
+            choice: ["Harare", "Bulawayo", "Gweru", "Mutare"],
+            answer: 0,
+            photo: "assets/images/sunset.jpeg"
+        }];
+    
+    var correctCount = 0;
+    var wrongCount = 0;
+    var unanswerCount = 0;
+    var timer = 20;
+    var intervalId;
+    var userGuess ="";
+    var running = false;
+    var qCount = options.length;
+    var pick;
+    var index;
+    var newArray = [];
+    var holder = [];
+    
+    
+    
+    $("#reset").hide();
+    //click start button to start game
+    $("#start").on("click", function () {
+            $("#start").hide();
+            displayQuestion();
+            runTimer();
+            for(var i = 0; i < options.length; i++) {
+        holder.push(options[i]);
     }
-}
-Q1 = new Question(1, "What does Mosi Oa tunya mean?", ["Smoke that thunders", "Victoria Falls", "Windy ravine", "Thunderstorms"], "Smoke that thunders");
-Q2 = new Question(2, "Who was the first president of Zimbabwe?", ["Robert Mugabe", "Canaan Banana", "Morgan Tsvangirai", "Abel Muzorewa"], "Canaan Banana");
-Q3 = new Question(3, "In what year did Zimbabwe attain independence from British Colonial Rule?", ["1957", "1980", "2017", "1960"], "1980");
-Q4 = new Question(4, "What is the capital city of Zimbabwe?", ["Harare", "Bulawayo", "Gweru", "Mutare"], "Harare");
-
-questionSet = [Q1, Q2, Q3, Q4]
-
-
-let gameInterval;
-let gametime = 25;
-let timerRunning = false;
-let questionNumber = 0;
-let correct = 0;
-let wrong = 0;
-let skipped = 0;
-let userAnswer;
-const resultDiv = $(".results");
-
-function run() {
-    $("#start").hide();
-    $("#reset").hide()
-
-    for (let i = 0; i < questionSet.length; i++) {
-        
-        
-        if (!timerRunning) {
-            gameInterval = setInterval(decrement, 1000);
-            timerRunning = true;
-            console.log(questionNumber);
+        })
+    //timer start
+    function runTimer(){
+        if (!running) {
+        intervalId = setInterval(decrement, 1000); 
+        running = true;
         }
-
     }
-    // questionSet[questionNumber].displayQuestion();
+    //timer countdown
+    function decrement() {
+        $("#timeleft").html("<h3>Time remaining: " + timer + "</h3>");
+        timer --;
     
-}
-
-function decrement() {
-    gametime--;
-    $("#timer-display").text("Time remaining: " + gametime + " seconds");
-    // showQuestion();
-    showQuestion()
-    
-    if (gametime === 0) {
-        // alert("Time Up!");
-        // stop();
-        gametime = 2;
-        questionNumber++;
+        //stop timer if reach 0
+        if (timer === 0) {
+            unanswerCount++;
+            stop();
+            $("#answerblock").html("<p>Time is up! The correct answer is: " + pick.choice[pick.answer] + "</p>");
+            hidepicture();
+        }	
     }
-    if (questionNumber === questionSet.length) {
-        stop();
-        $("#timer-display").empty();
-        timerRunning = false;
-        showresults();
-        $("#reset").show();
-        $("#question").empty();
+    
+    //timer stop
+    function stop() {
+        running = false;
+        clearInterval(intervalId);
     }
- 
-}
+    function displayQuestion() {
+        index = Math.floor(Math.random()*options.length);
+        pick = options[index];
+    
+            $("#questionblock").html("<h2>" + pick.question + "</h2>");
+            for(var i = 0; i < pick.choice.length; i++) {
+                var userChoice = $("<div>");
+                userChoice.addClass("answerchoice");
+                userChoice.html(pick.choice[i]);
+                //assign array position to it so can check answer
+                userChoice.attr("data-guessvalue", i);
+                $("#answerblock").append(userChoice);
+    //		}
+    }
 
-function stop() {
-    clearInterval(gameInterval);
-    timerRunning = false;
-}
-
-showQuestion = function () {
-    questionSet[questionNumber].displayQuestion();
-}
-
-function reset() {
-    // stop();
-    questionNumber = 0;
-    gametime = 2;
-    run();
-    $("#question").show();
-    $(".results").empty();
-}
-
-function showresults() {
+    $(".answerchoice").on("click", function () {
+        //grab array position from userGuess
+        userGuess = parseInt($(this).attr("data-guessvalue"));
+    
+        //correct guess or wrong guess outcomes
+        if (userGuess === pick.answer) {
+            stop();
+            correctCount++;
+            userGuess="";
+            $("#answerblock").html("<p>Correct!</p>");
+            hidepicture();
+    
+        } else {
+            stop();
+            wrongCount++;
+            userGuess="";
+            $("#answerblock").html("<p>Wrong! The correct answer is: " + pick.choice[pick.answer] + "</p>");
+            hidepicture();
+        }
+    })
+    }
     
     
-    resultDiv.append("<h2>Game Over!");
-    resultDiv.append("<div>Total Correct: " + correct + "</div>");
-    resultDiv.append("<div>Total Wrong: " + wrong+ "</div>");
-    resultDiv.append("<div>Total Skipped: " + skipped+ "</div>");
-}
-
-function answer() {
-
-    userAnswer = $(this).attr("answer");
-
-
-    if (userAnswer === questionSet[questionNumber].answer) {
-        stop();
-        correct++;
-        userAnswer = "";
-        resultDiv.html("<h2>Correct!");
-        
-    } else {
-        stop();
-        wrong++;
-        resultDiv.html("<h2>Wrong! The correct answer is: " + questionSet[questionNumber].answer);
+    function hidepicture () {
+        $("#answerblock").append("<img src=" + pick.photo + ">");
+        newArray.push(pick);
+        options.splice(index,1);
+    
+        var hidpic = setTimeout(function() {
+            $("#answerblock").empty();
+            timer= 20;
+    
+        //run the score screen if all questions answered
+        if ((wrongCount + correctCount + unanswerCount) === qCount) {
+            $("#questionblock").empty();
+            $("#questionblock").html("<h3>Game Over!  Here's how you did: </h3>");
+            $("#answerblock").append("<h4> Correct: " + correctCount + "</h4>" );
+            $("#answerblock").append("<h4> Incorrect: " + wrongCount + "</h4>" );
+            $("#answerblock").append("<h4> Unanswered: " + unanswerCount + "</h4>" );
+            $("#reset").show();
+            correctCount = 0;
+            wrongCount = 0;
+            unanswerCount = 0;
+    
+        } else {
+            runTimer();
+            displayQuestion();
+    
+        }
+        }, 3000);
+    
+    
     }
-    stop();
-    console.log(this.value);
-}
-
-
-$("#start").on("click", run);
-$("#reset").on("click", reset);
-$(".btn-choice").on("click", answer);
-
-
+    
+    $("#reset").on("click", function() {
+        $("#reset").hide();
+        $("#answerblock").empty();
+        $("#questionblock").empty();
+        for(var i = 0; i < holder.length; i++) {
+            options.push(holder[i]);
+        }
+        runTimer();
+        displayQuestion();
+    
+    })
+    
+    })
