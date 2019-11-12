@@ -5,12 +5,14 @@ function Question(number, questionText, choices, answer) {
     this.answer = answer;
     this.displayQuestion = function () {
 
-        questionDiv = $("<form>");
-        questionDiv.text(this.questionText);
+        // questionDiv = $("<form>");
+        // questionDiv.text(this.questionText);
 
-        $("#question").append(questionDiv);
+        $("#question").html(this.questionText);
         this.choices.forEach(element => {
-            $("#question").append("<button>" + element + "</button>");
+            let choices = $("<div>")
+            choices.append("<button>" + element + "</button>");
+            $("#question").append(choices);
         });
     }
 }
@@ -21,29 +23,47 @@ Q4 = new Question(4, "What is the capital city of Zimbabwe?", ["Harare", "Bulawa
 
 questionSet = [Q1, Q2, Q3, Q4]
 
-// 
+
 let gameInterval;
-let gametime = 6;
+let gametime = 2;
 let timerRunning = false;
 let questionNumber = 0;
 
 function run() {
-    if (!timerRunning) {
-        intervalId = setInterval(decrement, 1000);
-        timerRunning = true;
+    $("#start").hide();
+    $("#reset").hide()
+
+    for (let i = 0; i < questionSet.length; i++) {
+        
+        
+        if (!timerRunning) {
+            gameInterval = setInterval(decrement, 1000);
+            timerRunning = true;
+            console.log(questionNumber);
+        }
     }
+    // questionSet[questionNumber].displayQuestion();
+    
 }
 
 function decrement() {
-    
     gametime--;
     $("#timer-display").text("Time remaining: " + gametime + " seconds");
+    // showQuestion();
+    showQuestion()
+    
     if (gametime === 0) {
-        alert("Time Up!");
-        stop();
+        // alert("Time Up!");
+        // stop();
+        gametime = 2;
         questionNumber++;
-        gametime = 5;
     }
+    if (questionNumber === questionSet.length) {
+        stop();
+        timerRunning = false;
+        $("#reset").show()
+    }
+ 
 }
 
 function stop() {
@@ -51,60 +71,19 @@ function stop() {
     timerRunning = false;
 }
 
+showQuestion = function () {
+    questionSet[questionNumber].displayQuestion();
+}
 
+function reset() {
+    // stop();
+    questionNumber = 0;
+    gametime = 2;
+    run();
+}
 
-
-
-
-// function game() {
-//     // $("#timer-display").html("<h2>Time remaining: " + gametime + "<h/h2>");
-//     $(".start-display").empty();
-//     questionSet[questionNumber].displayQuestion();
-//     startTimer();
-// }
-
-
-// function startTimer() {
-//     showTime();
-//     clearInterval(gameInterval);
-//     gameInterval = setInterval(game, 1000);
-// }
-
-// function stop() {
-//     clearInterval(gameInterval);
-//     gameInterval = undefined;
-// }
-
-// function results() {
-
-//     let correct = 0;
-//     let wrong = 0;
-//     let unAnswered = 0;
-
-
-
-//     for (let i = 0; i < questionSet.length; i++) {
-
-
-
-//     };
-// }
-
-// function showTime() {
-//     gametime--;
-//     $("#timer-display").text("Time remaining: " + gametime + " seconds");
-
-//     if (gametime === 0) {
-//         stop();
-//         displayAnswer();
-//     }
-// }
-
-// function answer() {
-//     stop();
-//     let answer = $(this).val();
-//     console.log(answer)
-// }
 
 $("#start").on("click", run);
+$("#reset").on("click", reset);
 // $("button").on("click", answer);
+
